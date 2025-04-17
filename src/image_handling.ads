@@ -11,9 +11,7 @@ package Image_Handling is
   type Image_Area_Type is Array(Positive range <>, Positive range <>) of Pixel_Type;
   type Area_Type is access all Image_Area_Type;
   type Image_Type is private;
-  type Image_Format_Type is (P3,
-                             P3a);
-  type Is_Transparent_Type is range 0 .. 1;
+  --type Is_Transparent_Type is range 0 .. 1;
 
   --Underprogram
   procedure Put(Pixel : in Pixel_Type);
