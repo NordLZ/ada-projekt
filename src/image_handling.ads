@@ -8,8 +8,12 @@ package Image_Handling is
     B : Natural := 255;
     Alpha : Boolean := False;
   end record;
-  type Image_Area_Type is Array(1 .. 30, 1 .. 30) of Pixel_Type;
+  type Image_Area_Type is Array(Positive range <>, Positive range <>) of Pixel_Type;
+  type Area_Type is access all Image_Area_Type;
   type Image_Type is private;
+  type Image_Format_Type is (P3,
+                             P3a);
+  type Is_Transparent_Type is range 0 .. 1;
 
   --Underprogram
   procedure Put(Pixel : in Pixel_Type);
@@ -17,13 +21,16 @@ package Image_Handling is
   procedure Print_Image_Information(Image : in Image_Type);
   procedure Read(File_Name : in String; Image : out Image_Type);
   procedure Print(Image : in Image_Type; Start_X, Start_Y : in Natural);
+  function Image_Exists(Image : in Image_Type) return Boolean;
+  procedure Delete(Image : in out Image_Type);
 
-  private
 
-  type Image_Type is record
-    X_Dim : Positive := 30;
-    Y_Dim : Positive := 30;
-    Image_Area : Image_Area_Type;
-  end record;
+    private
+
+    type Image_Type is record
+      X_Dim : Positive;
+      Y_Dim : Positive;
+      Area : Area_Type;
+    end record;
 
 end Image_Handling;
