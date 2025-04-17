@@ -12,24 +12,27 @@ procedure Image_Program is
 		Put_Line("Usage: " & Command_Name & " IMAGE_FILENAME N [X Y]");
 	end Print_Error;
 	Image : Image_Type;
+	function Corrent_Argument_Amount return Boolean is
+	begin
+
+		if Argument_Count = 2 or Argument_Count = 4 then
+			return True;
+		end if;
+		Print_Error("Incorrect number of arguments!");
+		return False;
+	end Corrent_Argument_Amount;
+
 begin
-	Set_Default_Colours(White, Black);
-	case Argument_Count is
-		when 2 => 
-			if Integer'Value(Argument(2)) mod 2 = 0 then
-				Read(Argument(1), Image);
-				Print(Image, 0, 0);
-			else
-				Read(Argument(1), Image);
-				Print_Image_Information(Image);
-			end if;
-		when 4 =>
-			Read(Argument(1), Image);
+
+	if Corrent_Argument_Amount then
+		Read(Argument(1), Image);
+
+		if Integer'Value(Argument(2)) mod 2 = 0 then
 			Print(Image, Integer'Value(Argument(3)), Integer'Value(Argument(4)));
-		when others =>
-			Print_Error("Incorrect number of arguments!");
-	end case;
-exception
-	when Name_Error =>
-		Print_Error("File does not exist!");
+
+		else
+			Print_Image_Information(Image);
+
+		end if;
+	end if;
 end Image_Program;
