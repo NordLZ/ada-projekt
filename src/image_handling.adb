@@ -99,7 +99,7 @@ package body Image_Handling is
 				if (X = Image.Area'First(1) and Y = Image.Area'First(2)) or else Is_New_Colour(Current_Pixel, Prev_Pixel) then
 					Set_Background_Colour(To_Colour_Type(Current_Pixel.R, Current_Pixel.G, Current_Pixel.B));
 				end if;
-				Put("  ");
+				Put("..");
 			end loop;
 
 		end loop;
