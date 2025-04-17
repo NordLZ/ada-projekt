@@ -20,9 +20,9 @@ package body Image_Handling is
 
 	procedure Print_Image_Information(Image : in Image_Type) is
 	begin
-		for Y in Image.Area'Range(2) loop
-			for X in Image.Area'Range(1) loop
-				Put(Image.Area(X, Y));
+		for Y in Image.Area_Container.Area'Range(2) loop
+			for X in Image.Area_Container.Area'Range(1) loop
+				Put(Image.Area_Container.Area(X, Y));
 			end loop;
 		end loop;
 	end Print_Image_Information;
@@ -56,12 +56,12 @@ package body Image_Handling is
 
 		Skip_Line(F); -- skippa maxvärde
 
-		Image.Area := new Image_Area_Type(1 .. Image.X_Dim, 1 .. Image.Y_Dim);
+		Image.Area_Container.Area := new Image_Area_Type(1 .. Image.X_Dim, 1 .. Image.Y_Dim);
 
 		while not End_Of_File(F) loop
-			for Y in Image.Area'Range(2) loop
-				for X in Image.Area'Range(1) loop
-					Get(F, Image.Area(X, Y));
+			for Y in Image.Area_Container.Area'Range(2) loop
+				for X in Image.Area_Container.Area'Range(1) loop
+					Get(F, Image.Area_Container.Area(X, Y));
 				end loop;
 				Skip_Line(F);
 			end loop;
@@ -90,13 +90,14 @@ package body Image_Handling is
 		Reset_Colours;
 		Clear_Window;
 
-		for Y in Image.Area'Range(2) loop
-			for X in Image.Area'Range(1) loop
-				Current_Pixel := Image.Area(X,Y);
-				if X = Image.Area'First(1) then
-					Goto_XY(X*2 + Start_X, Y + Start_Y);
+		for Y in Image.Area_Container.Area'Range(2) loop
+			for X in Image.Area_Container.Area'Range(1) loop
+				Current_Pixel := Image.Area_Container.Area(X,Y);
+				if X = Image.Area_Container.Area'First(1) then
+					Goto_XY(X * 2 + Start_X, Y + Start_Y);
 				end if;
-				if (X = Image.Area'First(1) and Y = Image.Area'First(2)) or else Is_New_Colour(Current_Pixel, Prev_Pixel) then
+				-- kolla om det är första iterationen, annars kolla om det är ny färg
+				if (X = Image.Area_Container.Area'First(1) and Y = Image.Area_Container.Area'First(2)) or else Is_New_Colour(Current_Pixel, Prev_Pixel) then
 					Set_Background_Colour(To_Colour_Type(Current_Pixel.R, Current_Pixel.G, Current_Pixel.B));
 				end if;
 				Put("..");
@@ -106,7 +107,7 @@ package body Image_Handling is
 	end Print;
 	function Image_Exists(Image : in Image_Type) return Boolean is
 	begin
-		if Image.Area = null then
+		if Image.Area_Container.Area = null then
 			return False;
 		else
 			return True;
@@ -121,7 +122,7 @@ package body Image_Handling is
 	procedure Delete(Image : in out Image_Type) is
 	begin
 		if Image_Exists(Image) then
-			Free(Image.Area);
+			Free(Image.Area_Container.Area);
 		end if;
 	end Delete;
 end Image_Handling;

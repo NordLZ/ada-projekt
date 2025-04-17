@@ -11,6 +11,9 @@ package Image_Handling is
   type Image_Area_Type is Array(Positive range <>, Positive range <>) of Pixel_Type;
   type Area_Type is access all Image_Area_Type;
   type Image_Type is private;
+  type Area_Container_Type is record
+    Area : Area_Type;
+  end record;
   --type Is_Transparent_Type is range 0 .. 1;
 
   --Underprogram
@@ -23,12 +26,12 @@ package Image_Handling is
   procedure Delete(Image : in out Image_Type);
 
 
-    private
+  private
 
-    type Image_Type is record
-      X_Dim : Positive;
-      Y_Dim : Positive;
-      Area : Area_Type;
-    end record;
+  type Image_Type is record
+    X_Dim : Positive;
+    Y_Dim : Positive;
+    Area_Container : Area_Container_Type;
+  end record;
 
 end Image_Handling;
