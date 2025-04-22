@@ -101,6 +101,7 @@ package body Image_Handling is
 					Set_Background_Colour(To_Colour_Type(Current_Pixel.R, Current_Pixel.G, Current_Pixel.B));
 				end if;
 				Put("..");
+				Prev_Pixel := Current_Pixel;
 			end loop;
 
 		end loop;
